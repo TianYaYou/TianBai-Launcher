@@ -1,0 +1,77 @@
+## =======================================================================
+## Visual Studio / C# 基础过滤
+## =======================================================================
+
+# 编译产物与中间件
+[Dd]ebug/
+[Dd]ebugPS/
+[Rr]elease/
+[Rr]eleasePS/
+x64/
+x86/
+ARM/
+ARM64/
+bld/
+[Bb]in/
+[Ob]j/
+Log/
+Logs/
+
+# Visual Studio 自动生成的本地缓存与用户设置
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+
+# Roslyn 编译器及其他缓存
+*.suo
+*.userprefs
+*.cscache
+*.tmp
+
+## =======================================================================
+## WinUI 3 / Windows App SDK 专属过滤
+## =======================================================================
+
+# WinUI 3 代码生成器生成的中间 C++ / C# 文件 (非常关键)
+# 包含 XAML 编译生成的 .g.i.cs 和 .g.cs 文件
+Generated Files/
+[Gg]enerated [Ff]iles/
+
+# 打包工程 (WAP / Package) 产生的 AppX/MSIX 打包缓存与本地部署产物
+AppPackages/
+BundleArtifacts/
+Package.StoreAssociation.xml
+*.appx
+*.msix
+*.appxbundle
+*.msixbundle
+
+# 微软测试与代码覆盖率工具产物
+TestResults/
+*.sequenced
+
+## =======================================================================
+## NuGet 包管理过滤
+## =======================================================================
+
+# 排除本地项目内的 packages 目录 (使用全局缓存还原即可)
+packages/
+!packages/repositories.config
+project.fragment.lock.json
+project.lock.json
+*.nuget.props
+*.nuget.targets
+
+## =======================================================================
+## 操作系统与开发工具缓存 (可选补充)
+## =======================================================================
+
+# Windows 系统缓存
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# 常见代码编辑器缓存 (如 VS Code)
+.vscode/
+.idea/
