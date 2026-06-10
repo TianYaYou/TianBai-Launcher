@@ -1,19 +1,382 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Window
     x:Class="TianBai_Launcher.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:TianBai_Launcher"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    Title="TianBai-Launcher">
+    Title="TianBai Launcher"
+    mc:Ignorable="d">
 
     <Window.SystemBackdrop>
-        <MicaBackdrop />
+        <DesktopAcrylicBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid>
+    <Grid
+        x:Name="RootGrid"
+        Background="Transparent"
+        KeyDown="RootGrid_KeyDown"
+        SizeChanged="RootGrid_SizeChanged">
+        <!-- 背景层：图片永远在最底下，系统色遮罩保证浅色/深色主题下文字都可读。 -->
+        <Image
+            x:Name="BackgroundImage"
+            Source="Asscess/Photos/104597715_p0.jpg"
+            Stretch="UniformToFill"
+            Opacity="0.72" />
+        <Rectangle Fill="{ThemeResource ApplicationPageBackgroundThemeBrush}" Opacity="0.26" />
 
+        <!-- 主页面内容层。 -->
+        <Grid Padding="24">
+            <TextBlock
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                FontSize="28"
+                FontWeight="SemiBold"
+                Text="TianBai" />
+
+            <TextBlock
+                Margin="0,42,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                Text="启动器 Alpha"
+                TextWrapping="Wrap" />
+
+            <Button
+                x:Name="SettingsButton"
+                MinWidth="48"
+                Height="48"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Click="SettingsButton_Click"
+                ToolTipService.ToolTip="设置">
+                <FontIcon Glyph="&#xE713;" />
+            </Button>
+
+            <StackPanel
+                Width="460"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Spacing="8">
+                <TextBlock
+                    x:Name="LaunchPathTextBlock"
+                    HorizontalAlignment="Right"
+                    FontSize="12"
+                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                    TextAlignment="Right"
+                    TextTrimming="CharacterEllipsis" />
+
+                <Button
+                    x:Name="LaunchButton"
+                    MinWidth="172"
+                    Height="48"
+                    HorizontalAlignment="Right"
+                    Click="LaunchButton_Click"
+                    Style="{StaticResource AccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal" Spacing="10">
+                        <FontIcon x:Name="LaunchButtonIcon" Glyph="&#xE768;" />
+                        <TextBlock x:Name="LaunchButtonTextBlock" Text="开始游戏" />
+                    </StackPanel>
+                </Button>
+
+                <ProgressBar
+                    x:Name="LaunchProgressBar"
+                    Width="130"
+                    HorizontalAlignment="Right"
+                    IsIndeterminate="True"
+                    Value="0"
+                    Visibility="Collapsed" />
+            </StackPanel>
+        </Grid>
+
+        <!-- 主页面日志浮层：由启动设置里的开关控制，半高显示并自动滚动到最新日志。 -->
+        <Border
+            x:Name="MainLogPanel"
+            Margin="24,24,24,104"
+            Padding="16"
+            VerticalAlignment="Bottom"
+            Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            CornerRadius="16"
+            Visibility="Collapsed">
+            <Grid RowSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <TextBlock
+                    FontSize="16"
+                    FontWeight="SemiBold"
+                    Text="Unity Debug Log" />
+
+                <ScrollViewer
+                    x:Name="MainLogScrollViewer"
+                    Grid.Row="1"
+                    HorizontalScrollBarVisibility="Auto"
+                    VerticalScrollBarVisibility="Auto">
+                    <TextBlock
+                        x:Name="MainLogTextBlock"
+                        FontFamily="Consolas"
+                        FontSize="12"
+                        TextWrapping="NoWrap" />
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <!-- 设置页遮罩：整页从右侧划入，返回按钮使用 NavigationView 顶部原生返回。 -->
+        <Grid
+            x:Name="SettingsOverlay"
+            Opacity="0"
+            Background="{ThemeResource SmokeFillColorDefaultBrush}"
+            Visibility="Collapsed">
+            <Grid.RenderTransform>
+                <TranslateTransform x:Name="SettingsOverlayTransform" />
+            </Grid.RenderTransform>
+
+            <Border
+                Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1,0,0,0">
+                <NavigationView
+                    x:Name="SettingsNavigationView"
+                    Background="Transparent"
+                    IsBackButtonVisible="Visible"
+                    IsBackEnabled="True"
+                    IsSettingsVisible="False"
+                    PaneDisplayMode="Left"
+                    BackRequested="SettingsNavigationView_BackRequested"
+                    SelectionChanged="SettingsNavigationView_SelectionChanged">
+
+                    <NavigationView.AutoSuggestBox>
+                        <AutoSuggestBox
+                            x:Name="SettingsSearchBox"
+                            AutomationProperties.Name="Search"
+                            DisplayMemberPath="Title"
+                            PlaceholderText="搜索设置"
+                            QueryIcon="Find"
+                            QuerySubmitted="SettingsSearchBox_QuerySubmitted"
+                            SuggestionChosen="SettingsSearchBox_SuggestionChosen"
+                            TextChanged="SettingsSearchBox_TextChanged" />
+                    </NavigationView.AutoSuggestBox>
+
+                    <NavigationView.MenuItems>
+                        <NavigationViewItem x:Name="LaunchSettingsItem" Content="启动" Icon="Play" />
+                        <NavigationViewItem x:Name="DownloadSettingsItem" Content="下载" Icon="Download" />
+                        <NavigationViewItem x:Name="ChatSettingsItem" Content="对话" Icon="Message" />
+                        <NavigationViewItem x:Name="WhisperSettingsItem" Content="Wisper" Icon="Microphone" />
+                        <NavigationViewItem x:Name="TtsSettingsItem" Content="TTS" Icon="Volume" />
+                        <NavigationViewItem x:Name="MemorySettingsItem" Content="记忆" Icon="Library" />
+                        <NavigationViewItem x:Name="AboutSettingsItem" Content="关于" Icon="ContactInfo" />
+                        <NavigationViewItem x:Name="ExtraModuleSettingsItem" Content="额外模块" Icon="AllApps" />
+                    </NavigationView.MenuItems>
+
+                    <Grid Padding="32" RowSpacing="18">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Spacing="4">
+                            <TextBlock
+                                x:Name="SettingsTitleTextBlock"
+                                FontSize="24"
+                                FontWeight="SemiBold"
+                                Text="启动设置" />
+                            <TextBlock
+                                x:Name="SettingsDescriptionTextBlock"
+                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                Text="配置天白 Unity 程序的启动路径。" />
+                        </StackPanel>
+
+                        <InfoBar
+                            x:Name="StatusInfoBar"
+                            Grid.Row="1"
+                            IsOpen="True"
+                            Severity="Informational"
+                            Title="等待启动"
+                            Message="启动器会优先自动检测大仓库 Release 目录里的天白程序。" />
+
+                        <ScrollViewer Grid.Row="2">
+                            <Grid>
+                                <StackPanel x:Name="LaunchSettingsPanel" Spacing="12">
+                                    <TextBox
+                                        x:Name="GamePathTextBox"
+                                        Header="Unity 程序路径"
+                                        PlaceholderText="例如：E:\...\Release\Tian Bai Aic.exe"
+                                        TextChanged="GamePathTextBox_TextChanged" />
+
+                                    <TextBox
+                                        x:Name="LaunchArgumentsTextBox"
+                                        Header="自定义启动项"
+                                        PlaceholderText="例如：-screen-width 1280 -screen-height 720"
+                                        TextChanged="LauncherSettingsControl_Changed" />
+
+                                    <NumberBox
+                                        x:Name="LaunchLogLineCountNumberBox"
+                                        Header="展示日志行数"
+                                        Minimum="10"
+                                        Maximum="2000"
+                                        SmallChange="10"
+                                        ValueChanged="LauncherSettingsNumberBox_ValueChanged" />
+
+                                    <ToggleSwitch
+                                        x:Name="ShowLogOnMainPageSwitch"
+                                        Header="将日志展现主页面"
+                                        Toggled="ShowLogOnMainPageSwitch_Toggled" />
+
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <Button Click="DetectButton_Click">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <FontIcon Glyph="&#xE72C;" />
+                                                <TextBlock Text="重新检测" />
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Click="LaunchButton_Click" Style="{StaticResource AccentButtonStyle}">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <FontIcon Glyph="&#xE768;" />
+                                                <TextBlock Text="启动天白" />
+                                            </StackPanel>
+                                        </Button>
+
+                                        <Button Click="SaveLauncherSettingsButton_Click">
+                                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                                <FontIcon Glyph="&#xE74E;" />
+                                                <TextBlock Text="保存启动器配置" />
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+
+                                    <TextBlock
+                                        x:Name="UnityLogPathTextBlock"
+                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                        TextWrapping="Wrap" />
+
+                                    <ScrollViewer
+                                        x:Name="LaunchLogScrollViewer"
+                                        Height="260"
+                                        HorizontalScrollBarVisibility="Auto"
+                                        VerticalScrollBarVisibility="Auto">
+                                        <TextBlock
+                                            x:Name="LaunchLogTextBlock"
+                                            FontFamily="Consolas"
+                                            FontSize="12"
+                                            TextWrapping="NoWrap" />
+                                    </ScrollViewer>
+                                </StackPanel>
+
+                                <StackPanel x:Name="DownloadSettingsPanel" Spacing="12" Visibility="Collapsed">
+                                    <TextBlock FontSize="16" FontWeight="SemiBold" Text="下载功能暂时先不开发。" />
+                                    <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="之后可以在这里接入版本检查、补丁下载和模型下载。" />
+                                </StackPanel>
+
+                                <StackPanel x:Name="ChatSettingsPanel" Spacing="14" Visibility="Collapsed">
+                                    <ToggleSwitch x:Name="ChatEnabledSwitch" Header="启用对话 API" Toggled="EditableRoutedChanged" />
+                                    <TextBox x:Name="ChatNameTextBox" Header="配置名称" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="ChatApiHostTextBox" Header="API Host" PlaceholderText="https://example.com/v1" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="ChatApiPathTextBox" Header="API Path" PlaceholderText="/chat/completions" TextChanged="EditableTextChanged" />
+                                    <PasswordBox x:Name="ChatApiKeyPasswordBox" Header="API Key" PasswordChanged="EditableRoutedChanged" />
+                                    <TextBox x:Name="ChatModelTextBox" Header="默认模型" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="ChatModelListTextBox" Header="模型列表（逗号分隔）" TextChanged="EditableTextChanged" />
+                                    <NumberBox x:Name="ChatTemperatureNumberBox" Header="Temperature" Minimum="0" Maximum="2" SmallChange="0.1" ValueChanged="EditableNumberChanged" />
+                                    <ToggleSwitch x:Name="ChatStreamSwitch" Header="流式输出" Toggled="EditableRoutedChanged" />
+                                    <ToggleSwitch x:Name="ChatPassHistorySwitch" Header="携带历史对话" Toggled="EditableRoutedChanged" />
+                                    <ToggleSwitch x:Name="ChatUsePromptFileSwitch" Header="使用 Prompt 文件" Toggled="EditableRoutedChanged" />
+                                    <TextBox x:Name="ChatSystemPromptFileTextBox" Header="System Prompt 文件路径" TextChanged="EditableTextChanged" />
+                                    <ToggleSwitch x:Name="ChatLegacyJsonSwitch" Header="兼容旧 JSON 输出" Toggled="EditableRoutedChanged" />
+                                    <TextBox x:Name="ChatUserDisplayNameTextBox" Header="用户显示名" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="ChatDefaultSystemPromptTextBox" Header="默认 System Prompt" AcceptsReturn="True" Height="110" TextWrapping="Wrap" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="DialoguePromptTextBox" Header="dialogue_prompt.txt" AcceptsReturn="True" Height="220" TextWrapping="Wrap" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="ControlPlannerPromptTextBox" Header="control_planner_prompt.txt" AcceptsReturn="True" Height="260" TextWrapping="Wrap" TextChanged="EditableTextChanged" />
+                                </StackPanel>
+
+                                <StackPanel x:Name="WhisperSettingsPanel" Spacing="14" Visibility="Collapsed">
+                                    <InfoBar IsOpen="True" Severity="Informational" Title="Wisper 配置" Message="这里先写入 AI/whisper_config.json；Unity 侧后续接入后即可读取同一份配置。" />
+                                    <ToggleSwitch x:Name="WhisperEnabledSwitch" Header="启用语音唤醒" Toggled="EditableRoutedChanged" />
+                                    <TextBox x:Name="WhisperWakeWordTextBox" Header="唤醒词" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="WhisperModelFileTextBox" Header="模型文件（相对 StreamingAssets 或绝对路径）" PlaceholderText="Whisper/ggml-tiny.bin" TextChanged="EditableTextChanged" />
+                                    <NumberBox x:Name="WhisperWakeSilenceNumberBox" Header="唤醒静音判定秒数" Minimum="0.1" Maximum="10" SmallChange="0.1" ValueChanged="EditableNumberChanged" />
+                                    <NumberBox x:Name="WhisperCommandSilenceNumberBox" Header="指令静音判定秒数" Minimum="0.1" Maximum="10" SmallChange="0.1" ValueChanged="EditableNumberChanged" />
+                                    <ToggleSwitch x:Name="WhisperSubmitTailSwitch" Header="唤醒词后带指令时直接提交" Toggled="EditableRoutedChanged" />
+                                    <NumberBox x:Name="WhisperRestartDelayNumberBox" Header="AI 回答后重新监听延迟秒数" Minimum="0" Maximum="5" SmallChange="0.1" ValueChanged="EditableNumberChanged" />
+                                </StackPanel>
+
+                                <StackPanel x:Name="TtsSettingsPanel" Spacing="14" Visibility="Collapsed">
+                                    <InfoBar x:Name="TtsParseWarningInfoBar" IsOpen="False" Severity="Warning" Title="TTS 配置需要修复" />
+                                    <ToggleSwitch x:Name="TtsEnabledSwitch" Header="启用 TTS" Toggled="EditableRoutedChanged" />
+                                    <TextBox x:Name="TtsNameTextBox" Header="配置名称" TextChanged="EditableTextChanged" />
+                                    <ComboBox x:Name="TtsModeComboBox" Header="运行模式" SelectionChanged="EditableSelectionChanged">
+                                        <ComboBoxItem Content="远端 URL/API" Tag="0" />
+                                        <ComboBoxItem Content="本地 sherpa-onnx" Tag="1" />
+                                    </ComboBox>
+                                    <PasswordBox x:Name="TtsApiKeyPasswordBox" Header="远端 API Key" PasswordChanged="EditableRoutedChanged" />
+                                    <TextBox x:Name="TtsApiHostTextBox" Header="远端 API Host" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="TtsApiPathTextBox" Header="远端 API Path" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="TtsModelTextBox" Header="远端模型" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="TtsAudioFormatTextBox" Header="音频格式" TextChanged="EditableTextChanged" />
+                                    <NumberBox x:Name="TtsFallbackSampleRateNumberBox" Header="兜底采样率" Minimum="8000" Maximum="96000" ValueChanged="EditableNumberChanged" />
+                                    <NumberBox x:Name="TtsFallbackChannelsNumberBox" Header="兜底声道数" Minimum="1" Maximum="2" ValueChanged="EditableNumberChanged" />
+                                    <TextBox x:Name="TtsBaseVoiceDescriptionTextBox" Header="基础声音描述" AcceptsReturn="True" Height="100" TextWrapping="Wrap" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="TtsDefaultEmotionTextBox" Header="默认情感" TextChanged="EditableTextChanged" />
+                                    <ToggleSwitch x:Name="TtsAppendEmotionSwitch" Header="把情感追加到声音描述" Toggled="EditableRoutedChanged" />
+                                    <TextBox x:Name="TtsSherpaModelRootTextBox" Header="Sherpa 模型目录" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="TtsSherpaModelFileTextBox" Header="Sherpa 模型文件" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="TtsSherpaTokensFileTextBox" Header="Tokens 文件" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="TtsSherpaLexiconFileTextBox" Header="Lexicon 文件" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="TtsSherpaDictDirTextBox" Header="Dict 目录" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="TtsSherpaRuleFstsTextBox" Header="Rule FST 列表（逗号分隔）" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="TtsSherpaProviderTextBox" Header="Provider" TextChanged="EditableTextChanged" />
+                                    <NumberBox x:Name="TtsSherpaThreadsNumberBox" Header="线程数" Minimum="1" Maximum="16" ValueChanged="EditableNumberChanged" />
+                                    <NumberBox x:Name="TtsSherpaSpeakerNumberBox" Header="Speaker Id" Minimum="0" Maximum="999" ValueChanged="EditableNumberChanged" />
+                                    <NumberBox x:Name="TtsSherpaSpeedNumberBox" Header="语速" Minimum="0.2" Maximum="3" SmallChange="0.1" ValueChanged="EditableNumberChanged" />
+                                    <NumberBox x:Name="TtsSherpaMaxSentencesNumberBox" Header="最大切句数" Minimum="1" Maximum="20" ValueChanged="EditableNumberChanged" />
+                                    <NumberBox x:Name="TtsSherpaSilenceScaleNumberBox" Header="Silence Scale" Minimum="0" Maximum="2" SmallChange="0.1" ValueChanged="EditableNumberChanged" />
+                                    <NumberBox x:Name="TtsSherpaNoiseScaleNumberBox" Header="Noise Scale" Minimum="0" Maximum="2" SmallChange="0.1" ValueChanged="EditableNumberChanged" />
+                                    <NumberBox x:Name="TtsSherpaNoiseScaleWNumberBox" Header="Noise Scale W" Minimum="0" Maximum="2" SmallChange="0.1" ValueChanged="EditableNumberChanged" />
+                                    <NumberBox x:Name="TtsSherpaLengthScaleNumberBox" Header="Length Scale" Minimum="0.2" Maximum="3" SmallChange="0.1" ValueChanged="EditableNumberChanged" />
+                                    <ToggleSwitch x:Name="TtsSherpaDebugSwitch" Header="Sherpa Debug" Toggled="EditableRoutedChanged" />
+                                </StackPanel>
+
+                                <StackPanel x:Name="MemorySettingsPanel" Spacing="14" Visibility="Collapsed">
+                                    <InfoBar IsOpen="True" Severity="Informational" Title="记忆目录" Message="Memory 文件夹专门保存私有数据。这里先编辑好感度和记忆路径，语义检索以后可以继续扩展。" />
+                                    <TextBox x:Name="MemoryDirectoryTextBox" Header="Memory 文件夹" IsReadOnly="True" />
+                                    <TextBox x:Name="MemoryFileTextBox" Header="长期记忆文件" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="FavorabilityFileTextBox" Header="好感度文件" TextChanged="EditableTextChanged" />
+                                    <NumberBox x:Name="FavorabilityValueNumberBox" Header="好感度数值（0-1）" Minimum="0" Maximum="1" SmallChange="0.05" ValueChanged="EditableNumberChanged" />
+                                    <TextBox x:Name="FavorabilitySourceTextBox" Header="来源" TextChanged="EditableTextChanged" />
+                                    <TextBox x:Name="MemoryPreviewTextBox" Header="memory.jsonl 预览（只读）" AcceptsReturn="True" Height="220" IsReadOnly="True" TextWrapping="Wrap" />
+                                </StackPanel>
+
+                                <StackPanel x:Name="AboutSettingsPanel" Spacing="12" Visibility="Collapsed">
+                                    <TextBlock FontSize="16" FontWeight="SemiBold" Text="TianBai Launcher" />
+                                    <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="用于启动天白 Unity 桌宠，并可视化编辑对话、Wisper、TTS 和记忆配置。" TextWrapping="Wrap" />
+                                    <TextBlock x:Name="ConfigRootTextBlock" TextWrapping="Wrap" />
+                                </StackPanel>
+
+                                <StackPanel x:Name="ExtraModuleSettingsPanel" Spacing="12" Visibility="Collapsed">
+                                    <TextBlock FontSize="16" FontWeight="SemiBold" Text="额外模块暂时先不开发。" />
+                                    <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="之后这里可以接插件、工具队列和模块管理。" />
+                                </StackPanel>
+                            </Grid>
+                        </ScrollViewer>
+
+                        <Border
+                            x:Name="EditableActionBar"
+                            Grid.Row="3"
+                            Padding="0,14,0,0"
+                            Visibility="Collapsed">
+                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="8">
+                                <Button x:Name="DiscardChangesButton" Click="DiscardChangesButton_Click" Content="放弃保存" />
+                                <Button x:Name="SaveChangesButton" Click="SaveChangesButton_Click" Content="保存更改" Style="{StaticResource AccentButtonStyle}" />
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </NavigationView>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

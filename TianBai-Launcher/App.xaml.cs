@@ -35,6 +35,7 @@ namespace TianBai_Launcher
         public App()
         {
             InitializeComponent();
+            UnhandledException += App_UnhandledException;
         }
 
         /// <summary>
@@ -43,8 +44,34 @@ namespace TianBai_Launcher
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            _window = new MainWindow();
-            _window.Activate();
+            try
+            {
+                _window = new MainWindow();
+                _window.Activate();
+            }
+            catch (Exception e)
+            {
+                WriteCrashLog(e);
+                throw;
+            }
+        }
+
+        private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            WriteCrashLog(e.Exception);
+        }
+
+        private static void WriteCrashLog(Exception e)
+        {
+            try
+            {
+                string path = System.IO.Path.Combine(AppContext.BaseDirectory, "launcher_crash.log");
+                File.WriteAllText(path, e.ToString());
+            }
+            catch
+            {
+                // 崩溃日志只用于本地调试，写入失败不能再触发新的异常。
+            }
         }
     }
 }
