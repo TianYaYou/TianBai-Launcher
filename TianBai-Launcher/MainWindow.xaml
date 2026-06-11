@@ -17,7 +17,59 @@
         Background="Transparent"
         KeyDown="RootGrid_KeyDown"
         SizeChanged="RootGrid_SizeChanged">
+
         <Grid.Resources>
+
+            <Style x:Key="PowerToysItemBorderStyle" TargetType="Border">
+                <Setter Property="MinHeight" Value="72" />
+                <Setter Property="Padding" Value="16,0" />
+                <Setter Property="Margin" Value="1,1,1,4" />
+                <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+                <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="4" />
+            </Style>
+
+            <Style x:Key="PowerToysExpanderStyle" TargetType="Expander">
+                <Setter Property="Margin" Value="1,1,1,4" />
+                <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+                <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="CornerRadius" Value="4" />
+                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            </Style>
+
+            <Style x:Key="PowerToysInnerItemBorderStyle" TargetType="Border">
+                <Setter Property="MinHeight" Value="48" />
+                <Setter Property="Padding" Value="16,8" />
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
+                <Setter Property="BorderThickness" Value="0,0,0,1" />
+                <Setter Property="CornerRadius" Value="0" />
+            </Style>
+
+            <Style x:Key="PowerToysTitleStackStyle" TargetType="StackPanel">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="0,16" />
+            </Style>
+
+            <Style x:Key="PowerToysTitleStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="FontWeight" Value="Medium" />
+            </Style>
+
+            <Style x:Key="PowerToysInnerTitleStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+
+            <Style x:Key="PowerToysSubtitleStyle" TargetType="TextBlock">
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="Foreground" Value="{ThemeResource TextFillColorSecondaryBrush}" />
+                <Setter Property="Margin" Value="0,4,0,0" />
+                <Setter Property="TextWrapping" Value="Wrap" />
+            </Style>
 
             <Style x:Key="SettingsCardStyle" TargetType="Border">
                 <Setter Property="Padding" Value="18" />
@@ -27,23 +79,11 @@
                 <Setter Property="CornerRadius" Value="6" />
             </Style>
             <Style x:Key="SettingsCardStackStyle" TargetType="StackPanel">
-                <Setter Property="Spacing" Value="12" />
+                <Setter Property="Margin" Value="0,0,0,12" />
             </Style>
             <Style x:Key="SettingsSectionTitleStyle" TargetType="TextBlock">
                 <Setter Property="FontSize" Value="16" />
                 <Setter Property="FontWeight" Value="SemiBold" />
-            </Style>
-
-            <Style x:Key="PowerToysItemBorderStyle" TargetType="Border">
-                <Setter Property="Padding" Value="16,12" />
-                <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
-                <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="CornerRadius" Value="8" />
-            </Style>
-
-            <Style x:Key="PowerToysGroupStackStyle" TargetType="StackPanel">
-                <Setter Property="Spacing" Value="4" />
             </Style>
         </Grid.Resources>
 
@@ -55,136 +95,48 @@
         <Rectangle Fill="{ThemeResource ApplicationPageBackgroundThemeBrush}" Opacity="0.26" />
 
         <Grid Padding="24">
-            <TextBlock
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                FontSize="28"
-                FontWeight="SemiBold"
-                Text="TianBai" />
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="28" FontWeight="SemiBold" Text="TianBai" />
+            <TextBlock Margin="0,42,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="启动器 Alpha" TextWrapping="Wrap" />
 
-            <TextBlock
-                Margin="0,42,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                Text="启动器 Alpha"
-                TextWrapping="Wrap" />
-
-            <Button
-                x:Name="SettingsButton"
-                MinWidth="48"
-                Height="48"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                Click="SettingsButton_Click"
-                ToolTipService.ToolTip="设置">
+            <Button x:Name="SettingsButton" MinWidth="48" Height="48" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="SettingsButton_Click" ToolTipService.ToolTip="设置">
                 <FontIcon Glyph="&#xE713;" />
             </Button>
 
-            <StackPanel
-                Width="460"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Spacing="8">
-                <TextBlock
-                    x:Name="LaunchPathTextBlock"
-                    HorizontalAlignment="Right"
-                    FontSize="12"
-                    Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                    TextAlignment="Right"
-                    TextTrimming="CharacterEllipsis" />
-
-                <Button
-                    x:Name="LaunchButton"
-                    MinWidth="172"
-                    Height="48"
-                    HorizontalAlignment="Right"
-                    Click="LaunchButton_Click"
-                    Style="{StaticResource AccentButtonStyle}">
+            <StackPanel Width="460" HorizontalAlignment="Right" VerticalAlignment="Bottom" Spacing="8">
+                <TextBlock x:Name="LaunchPathTextBlock" HorizontalAlignment="Right" FontSize="12" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextAlignment="Right" TextTrimming="CharacterEllipsis" />
+                <Button x:Name="LaunchButton" MinWidth="172" Height="48" HorizontalAlignment="Right" Click="LaunchButton_Click" Style="{StaticResource AccentButtonStyle}">
                     <StackPanel Orientation="Horizontal" Spacing="10">
                         <FontIcon x:Name="LaunchButtonIcon" Glyph="&#xE768;" />
                         <TextBlock x:Name="LaunchButtonTextBlock" Text="开始游戏" />
                     </StackPanel>
                 </Button>
-
-                <ProgressBar
-                    x:Name="LaunchProgressBar"
-                    Width="130"
-                    HorizontalAlignment="Right"
-                    IsIndeterminate="True"
-                    Value="0"
-                    Visibility="Collapsed" />
+                <ProgressBar x:Name="LaunchProgressBar" Width="130" HorizontalAlignment="Right" IsIndeterminate="True" Value="0" Visibility="Collapsed" />
             </StackPanel>
         </Grid>
 
-        <Border
-            x:Name="MainLogPanel"
-            Margin="24,24,24,104"
-            Padding="16"
-            VerticalAlignment="Bottom"
-            Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-            BorderThickness="1"
-            CornerRadius="16"
-            Visibility="Collapsed">
+        <Border x:Name="MainLogPanel" Margin="24,24,24,104" Padding="16" VerticalAlignment="Bottom" Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="16" Visibility="Collapsed">
             <Grid RowSpacing="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-
-                <TextBlock
-                    FontSize="16"
-                    FontWeight="SemiBold"
-                    Text="Unity Debug Log" />
-
-                <ScrollViewer
-                    x:Name="MainLogScrollViewer"
-                    Grid.Row="1"
-                    HorizontalScrollBarVisibility="Auto"
-                    VerticalScrollBarVisibility="Auto">
-                    <TextBlock
-                        x:Name="MainLogTextBlock"
-                        FontFamily="Consolas"
-                        FontSize="12"
-                        TextWrapping="NoWrap" />
+                <TextBlock FontSize="16" FontWeight="SemiBold" Text="Unity Debug Log" />
+                <ScrollViewer x:Name="MainLogScrollViewer" Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <TextBlock x:Name="MainLogTextBlock" FontFamily="Consolas" FontSize="12" TextWrapping="NoWrap" />
                 </ScrollViewer>
             </Grid>
         </Border>
 
-        <Grid
-            x:Name="SettingsOverlay"
-            Opacity="0"
-            Background="{ThemeResource SmokeFillColorDefaultBrush}"
-            Visibility="Collapsed">
+        <Grid x:Name="SettingsOverlay" Opacity="0" Background="{ThemeResource SmokeFillColorDefaultBrush}" Visibility="Collapsed">
             <Grid.RenderTransform>
                 <TranslateTransform x:Name="SettingsOverlayTransform" />
             </Grid.RenderTransform>
 
-            <Border
-                Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}"
-                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                BorderThickness="1,0,0,0">
-                <NavigationView
-                    x:Name="SettingsNavigationView"
-                    Background="Transparent"
-                    IsBackButtonVisible="Visible"
-                    IsBackEnabled="True"
-                    IsSettingsVisible="False"
-                    PaneDisplayMode="Left"
-                    BackRequested="SettingsNavigationView_BackRequested"
-                    SelectionChanged="SettingsNavigationView_SelectionChanged">
+            <Border Background="{ThemeResource AcrylicInAppFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1,0,0,0">
+                <NavigationView x:Name="SettingsNavigationView" Background="Transparent" IsBackButtonVisible="Visible" IsBackEnabled="True" IsSettingsVisible="False" PaneDisplayMode="Left" BackRequested="SettingsNavigationView_BackRequested" SelectionChanged="SettingsNavigationView_SelectionChanged">
 
                     <NavigationView.AutoSuggestBox>
-                        <AutoSuggestBox
-                            x:Name="SettingsSearchBox"
-                            AutomationProperties.Name="Search"
-                            DisplayMemberPath="Title"
-                            PlaceholderText="搜索设置"
-                            QueryIcon="Find"
-                            QuerySubmitted="SettingsSearchBox_QuerySubmitted"
-                            SuggestionChosen="SettingsSearchBox_SuggestionChosen"
-                            TextChanged="SettingsSearchBox_TextChanged" />
+                        <AutoSuggestBox x:Name="SettingsSearchBox" AutomationProperties.Name="Search" DisplayMemberPath="Title" PlaceholderText="搜索设置" QueryIcon="Find" QuerySubmitted="SettingsSearchBox_QuerySubmitted" SuggestionChosen="SettingsSearchBox_SuggestionChosen" TextChanged="SettingsSearchBox_TextChanged" />
                     </NavigationView.AutoSuggestBox>
 
                     <NavigationView.MenuItems>
@@ -207,78 +159,77 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Spacing="4">
-                            <TextBlock
-                                x:Name="SettingsTitleTextBlock"
-                                FontSize="24"
-                                FontWeight="SemiBold"
-                                Text="启动设置" />
-                            <TextBlock
-                                x:Name="SettingsDescriptionTextBlock"
-                                Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                Text="配置天白 Unity 程序的启动路径。" />
+                            <TextBlock x:Name="SettingsTitleTextBlock" FontSize="24" FontWeight="SemiBold" Text="启动设置" />
+                            <TextBlock x:Name="SettingsDescriptionTextBlock" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="配置天白 Unity 程序的启动路径。" />
                         </StackPanel>
 
-                        <InfoBar
-                            x:Name="StatusInfoBar"
-                            Grid.Row="1"
-                            IsOpen="True"
-                            Severity="Informational"
-                            Title="等待启动"
-                            Message="启动器会优先自动检测大仓库 Release 目录里的天白程序。" />
+                        <InfoBar x:Name="StatusInfoBar" Grid.Row="1" IsOpen="True" Severity="Informational" Title="等待启动" Message="启动器会优先自动检测大仓库 Release 目录里的天白程序。" />
 
                         <ScrollViewer Grid.Row="2" Padding="0,0,16,0">
                             <Grid>
 
-                                <StackPanel x:Name="LaunchSettingsPanel" Spacing="24">
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
+                                <StackPanel x:Name="LaunchSettingsPanel">
+                                    <StackPanel>
                                         <Border Style="{StaticResource PowerToysItemBorderStyle}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="350" />
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Unity 程序路径" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="Unity 程序路径" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="GamePathTextBox" PlaceholderText="例如：E:\...\Release\Tian Bai Aic.exe" TextChanged="GamePathTextBox_TextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
-
                                         <Border Style="{StaticResource PowerToysItemBorderStyle}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="350" />
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="自定义启动项" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="自定义启动项" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="LaunchArgumentsTextBox" PlaceholderText="例如：-screen-width 1280 -screen-height 720" TextChanged="LauncherSettingsControl_Changed" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
                                     </StackPanel>
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="将日志展现主页面" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <ToggleSwitch Grid.Column="1" x:Name="ShowLogOnMainPageSwitch" Toggled="ShowLogOnMainPageSwitch_Toggled" VerticalAlignment="Center" Margin="0" />
+                                    <Expander Style="{StaticResource PowerToysExpanderStyle}">
+                                        <Expander.Header>
+                                            <Grid MinHeight="72">
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="主页日志监控" Style="{StaticResource PowerToysTitleStyle}" />
+                                                    <TextBlock Text="在启动器主界面实时查看 Unity 输出" Style="{StaticResource PowerToysSubtitleStyle}" />
+                                                </StackPanel>
                                             </Grid>
-                                        </Border>
+                                        </Expander.Header>
+                                        <StackPanel Padding="0,4,0,4">
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="将日志展现主页面" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <ToggleSwitch Grid.Column="1" x:Name="ShowLogOnMainPageSwitch" Toggled="ShowLogOnMainPageSwitch_Toggled" VerticalAlignment="Center" Margin="0" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}" BorderThickness="0">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="200" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="展示日志行数" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <NumberBox Grid.Column="1" x:Name="LaunchLogLineCountNumberBox" Minimum="10" Maximum="2000" SmallChange="10" ValueChanged="LauncherSettingsNumberBox_ValueChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                        </StackPanel>
+                                    </Expander>
 
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="200" />
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="展示日志行数" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <NumberBox Grid.Column="1" x:Name="LaunchLogLineCountNumberBox" Minimum="10" Maximum="2000" SmallChange="10" ValueChanged="LauncherSettingsNumberBox_ValueChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                    </StackPanel>
-
-                                    <Border Background="{ThemeResource LayerOnAcrylicFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="8" Padding="16">
+                                    <Border Background="{ThemeResource LayerOnAcrylicFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="4" Padding="16" Margin="1,20,1,0">
                                         <StackPanel Spacing="16">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
@@ -286,7 +237,6 @@
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Text="启动器控制" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="16"/>
-
                                                 <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
                                                     <Button Click="DetectButton_Click">
                                                         <StackPanel Orientation="Horizontal" Spacing="8">
@@ -311,7 +261,7 @@
 
                                             <StackPanel Spacing="6">
                                                 <TextBlock x:Name="UnityLogPathTextBlock" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" FontSize="12" />
-                                                <Border BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="6" Background="{ThemeResource ControlFillColorDefaultBrush}">
+                                                <Border BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" CornerRadius="4" Background="{ThemeResource ControlFillColorDefaultBrush}">
                                                     <ScrollViewer x:Name="LaunchLogScrollViewer" Height="200" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                                                         <TextBlock x:Name="LaunchLogTextBlock" FontFamily="Consolas" FontSize="12" TextWrapping="NoWrap" Padding="12" />
                                                     </ScrollViewer>
@@ -321,38 +271,42 @@
                                     </Border>
                                 </StackPanel>
 
-                                <StackPanel x:Name="DownloadSettingsPanel" Spacing="24" Visibility="Collapsed">
+                                <StackPanel x:Name="DownloadSettingsPanel" Visibility="Collapsed">
                                     <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                        <StackPanel Spacing="8">
-                                            <TextBlock FontSize="16" FontWeight="SemiBold" Text="下载功能暂时先不开发。" />
-                                            <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="之后可以在这里接入版本检查、补丁下载和模型下载。" />
+                                        <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                            <TextBlock Text="下载功能暂时先不开发。" Style="{StaticResource PowerToysTitleStyle}" />
+                                            <TextBlock Text="之后可以在这里接入版本检查、补丁下载和模型下载。" Style="{StaticResource PowerToysSubtitleStyle}" />
                                         </StackPanel>
                                     </Border>
                                 </StackPanel>
 
-                                <StackPanel x:Name="ChatSettingsPanel" Spacing="24" Visibility="Collapsed">
+                                <StackPanel x:Name="ChatSettingsPanel" Visibility="Collapsed">
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
+                                    <StackPanel>
                                         <Border Style="{StaticResource PowerToysItemBorderStyle}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="启用对话 API" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="启用对话 API" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <ToggleSwitch Grid.Column="1" x:Name="ChatEnabledSwitch" Toggled="EditableRoutedChanged" Margin="0" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
                                     </StackPanel>
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
+                                    <StackPanel>
                                         <Border Style="{StaticResource PowerToysItemBorderStyle}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="配置名称" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="配置名称" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="ChatNameTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -362,20 +316,24 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="用户显示名" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="用户显示名" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="ChatUserDisplayNameTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
                                     </StackPanel>
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
+                                    <StackPanel>
                                         <Border Style="{StaticResource PowerToysItemBorderStyle}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="API Host" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="API Host" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="ChatApiHostTextBox" PlaceholderText="https://example.com/v1" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -385,7 +343,9 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="API Path" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="API Path" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="ChatApiPathTextBox" PlaceholderText="/chat/completions" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -395,20 +355,24 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="API Key" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="API Key" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <PasswordBox Grid.Column="1" x:Name="ChatApiKeyPasswordBox" PasswordChanged="EditableRoutedChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
                                     </StackPanel>
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
+                                    <StackPanel>
                                         <Border Style="{StaticResource PowerToysItemBorderStyle}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="默认模型" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="默认模型" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="ChatModelTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -418,7 +382,9 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="模型列表（逗号分隔）" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="模型列表（逗号分隔）" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="ChatModelListTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -428,20 +394,24 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="200"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Temperature" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="Temperature" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <NumberBox Grid.Column="1" x:Name="ChatTemperatureNumberBox" Minimum="0" Maximum="2" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
                                     </StackPanel>
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
+                                    <StackPanel>
                                         <Border Style="{StaticResource PowerToysItemBorderStyle}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="流式输出" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="流式输出" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <ToggleSwitch Grid.Column="1" x:Name="ChatStreamSwitch" Toggled="EditableRoutedChanged" VerticalAlignment="Center" Margin="0" />
                                             </Grid>
                                         </Border>
@@ -451,7 +421,9 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="携带历史对话" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="携带历史对话" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <ToggleSwitch Grid.Column="1" x:Name="ChatPassHistorySwitch" Toggled="EditableRoutedChanged" VerticalAlignment="Center" Margin="0" />
                                             </Grid>
                                         </Border>
@@ -461,66 +433,79 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="兼容旧 JSON 输出" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="兼容旧 JSON 输出" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <ToggleSwitch Grid.Column="1" x:Name="ChatLegacyJsonSwitch" Toggled="EditableRoutedChanged" VerticalAlignment="Center" Margin="0" />
                                             </Grid>
                                         </Border>
                                     </StackPanel>
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="使用 Prompt 文件" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <ToggleSwitch Grid.Column="1" x:Name="ChatUsePromptFileSwitch" Toggled="EditableRoutedChanged" VerticalAlignment="Center" Margin="0" />
+                                    <Expander Style="{StaticResource PowerToysExpanderStyle}">
+                                        <Expander.Header>
+                                            <Grid MinHeight="72">
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="Prompt 与高级模板设定" Style="{StaticResource PowerToysTitleStyle}" />
+                                                    <TextBlock Text="自定义系统预设、对话模板与计划器提示词" Style="{StaticResource PowerToysSubtitleStyle}" />
+                                                </StackPanel>
                                             </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="300"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="System Prompt 文件路径" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <TextBox Grid.Column="1" x:Name="ChatSystemPromptFileTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <StackPanel Spacing="8">
-                                                <TextBlock Text="默认 System Prompt" FontWeight="Medium" />
-                                                <TextBox x:Name="ChatDefaultSystemPromptTextBox" AcceptsReturn="True" Height="110" TextWrapping="Wrap" TextChanged="EditableTextChanged" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <StackPanel Spacing="8">
-                                                <TextBlock Text="dialogue_prompt.txt" FontWeight="Medium" />
-                                                <TextBox x:Name="DialoguePromptTextBox" AcceptsReturn="True" Height="220" TextWrapping="Wrap" TextChanged="EditableTextChanged" />
-                                            </StackPanel>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <StackPanel Spacing="8">
-                                                <TextBlock Text="control_planner_prompt.txt" FontWeight="Medium" />
-                                                <TextBox x:Name="ControlPlannerPromptTextBox" AcceptsReturn="True" Height="260" TextWrapping="Wrap" TextChanged="EditableTextChanged" />
-                                            </StackPanel>
-                                        </Border>
-                                    </StackPanel>
+                                        </Expander.Header>
+                                        <StackPanel Padding="0,4,0,8">
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="使用 Prompt 文件" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <ToggleSwitch Grid.Column="1" x:Name="ChatUsePromptFileSwitch" Toggled="EditableRoutedChanged" VerticalAlignment="Center" Margin="0" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="300"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="System Prompt 文件路径" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <TextBox Grid.Column="1" x:Name="ChatSystemPromptFileTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <StackPanel Margin="0,8">
+                                                    <TextBlock Text="默认 System Prompt" Style="{StaticResource PowerToysInnerTitleStyle}" Margin="0,0,0,8" />
+                                                    <TextBox x:Name="ChatDefaultSystemPromptTextBox" AcceptsReturn="True" Height="110" TextWrapping="Wrap" TextChanged="EditableTextChanged" />
+                                                </StackPanel>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <StackPanel Margin="0,8">
+                                                    <TextBlock Text="dialogue_prompt.txt" Style="{StaticResource PowerToysInnerTitleStyle}" Margin="0,0,0,8" />
+                                                    <TextBox x:Name="DialoguePromptTextBox" AcceptsReturn="True" Height="220" TextWrapping="Wrap" TextChanged="EditableTextChanged" />
+                                                </StackPanel>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}" BorderThickness="0">
+                                                <StackPanel Margin="0,8">
+                                                    <TextBlock Text="control_planner_prompt.txt" Style="{StaticResource PowerToysInnerTitleStyle}" Margin="0,0,0,8" />
+                                                    <TextBox x:Name="ControlPlannerPromptTextBox" AcceptsReturn="True" Height="260" TextWrapping="Wrap" TextChanged="EditableTextChanged" />
+                                                </StackPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </Expander>
                                 </StackPanel>
 
-                                <StackPanel x:Name="WhisperSettingsPanel" Spacing="24" Visibility="Collapsed">
-                                    <InfoBar IsOpen="True" Severity="Informational" Title="Wisper 配置" Message="这里先写入 AI/whisper_config.json；Unity 侧后续接入后即可读取同一份配置。" />
+                                <StackPanel x:Name="WhisperSettingsPanel" Visibility="Collapsed">
+                                    <InfoBar IsOpen="True" Severity="Informational" Title="Wisper 配置" Message="这里先写入 AI/whisper_config.json；Unity 侧后续接入后即可读取同一份配置。" Margin="1,0,1,16" />
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
+                                    <StackPanel>
                                         <Border Style="{StaticResource PowerToysItemBorderStyle}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="启用语音唤醒" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="启用语音唤醒" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <ToggleSwitch Grid.Column="1" x:Name="WhisperEnabledSwitch" Toggled="EditableRoutedChanged" VerticalAlignment="Center" Margin="0" />
                                             </Grid>
                                         </Border>
@@ -530,20 +515,24 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="唤醒词后带指令时直接提交" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="唤醒词后带指令时直接提交" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <ToggleSwitch Grid.Column="1" x:Name="WhisperSubmitTailSwitch" Toggled="EditableRoutedChanged" VerticalAlignment="Center" Margin="0" />
                                             </Grid>
                                         </Border>
                                     </StackPanel>
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
+                                    <StackPanel>
                                         <Border Style="{StaticResource PowerToysItemBorderStyle}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="唤醒词" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="唤醒词" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="WhisperWakeWordTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -553,57 +542,71 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="模型文件（相对或绝对路径）" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="模型文件（相对或绝对路径）" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="WhisperModelFileTextBox" PlaceholderText="Whisper/ggml-tiny.bin" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
                                     </StackPanel>
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="200"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="唤醒静音判定秒数" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <NumberBox Grid.Column="1" x:Name="WhisperWakeSilenceNumberBox" Minimum="0.1" Maximum="10" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                    <Expander Style="{StaticResource PowerToysExpanderStyle}">
+                                        <Expander.Header>
+                                            <Grid MinHeight="72">
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="高级触发与静音时序" Style="{StaticResource PowerToysTitleStyle}" />
+                                                    <TextBlock Text="微调静音判定长度与回答后重启监听的延迟" Style="{StaticResource PowerToysSubtitleStyle}" />
+                                                </StackPanel>
                                             </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="200"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="指令静音判定秒数" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <NumberBox Grid.Column="1" x:Name="WhisperCommandSilenceNumberBox" Minimum="0.1" Maximum="10" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="200"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="AI 回答后重新监听延迟秒数" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <NumberBox Grid.Column="1" x:Name="WhisperRestartDelayNumberBox" Minimum="0" Maximum="5" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                    </StackPanel>
+                                        </Expander.Header>
+                                        <StackPanel Padding="0,4,0,8">
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="200"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="唤醒静音判定秒数" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <NumberBox Grid.Column="1" x:Name="WhisperWakeSilenceNumberBox" Minimum="0.1" Maximum="10" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="200"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="指令静音判定秒数" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <NumberBox Grid.Column="1" x:Name="WhisperCommandSilenceNumberBox" Minimum="0.1" Maximum="10" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}" BorderThickness="0">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="200"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="AI 回答后重新监听延迟秒数" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <NumberBox Grid.Column="1" x:Name="WhisperRestartDelayNumberBox" Minimum="0" Maximum="5" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                        </StackPanel>
+                                    </Expander>
                                 </StackPanel>
 
-                                <StackPanel x:Name="TtsSettingsPanel" Spacing="24" Visibility="Collapsed">
-                                    <InfoBar x:Name="TtsParseWarningInfoBar" IsOpen="False" Severity="Warning" Title="TTS 配置需要修复" />
+                                <StackPanel x:Name="TtsSettingsPanel" Visibility="Collapsed">
+                                    <InfoBar x:Name="TtsParseWarningInfoBar" IsOpen="False" Severity="Warning" Title="TTS 配置需要修复" Margin="1,0,1,16" />
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
+                                    <StackPanel>
                                         <Border Style="{StaticResource PowerToysItemBorderStyle}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="启用 TTS" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="启用 TTS" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <ToggleSwitch Grid.Column="1" x:Name="TtsEnabledSwitch" Toggled="EditableRoutedChanged" VerticalAlignment="Center" Margin="0" />
                                             </Grid>
                                         </Border>
@@ -613,7 +616,9 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="配置名称" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="配置名称" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="TtsNameTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -623,7 +628,9 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="运行模式" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="运行模式" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <ComboBox Grid.Column="1" x:Name="TtsModeComboBox" SelectionChanged="EditableSelectionChanged" VerticalAlignment="Center" HorizontalAlignment="Stretch">
                                                     <ComboBoxItem Content="远端 URL/API" Tag="0" />
                                                     <ComboBoxItem Content="本地 sherpa-onnx" Tag="1" />
@@ -632,15 +639,17 @@
                                         </Border>
                                     </StackPanel>
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
-                                        <TextBlock Text="远端 API 设置" FontWeight="SemiBold" FontSize="14" Margin="4,0,0,8" />
+                                    <StackPanel>
+                                        <TextBlock Text="远端 API 设置" FontWeight="SemiBold" FontSize="14" Margin="4,16,0,8" />
                                         <Border Style="{StaticResource PowerToysItemBorderStyle}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="远端 API Key" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="远端 API Key" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <PasswordBox Grid.Column="1" x:Name="TtsApiKeyPasswordBox" PasswordChanged="EditableRoutedChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -650,7 +659,9 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="远端 API Host" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="远端 API Host" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="TtsApiHostTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -660,7 +671,9 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="远端 API Path" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="远端 API Path" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="TtsApiPathTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -670,81 +683,95 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="远端模型" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="远端模型" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="TtsModelTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="300"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="音频格式" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <TextBox Grid.Column="1" x:Name="TtsAudioFormatTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
                                     </StackPanel>
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="200"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="兜底采样率" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <NumberBox Grid.Column="1" x:Name="TtsFallbackSampleRateNumberBox" Minimum="8000" Maximum="96000" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                    <Expander Style="{StaticResource PowerToysExpanderStyle}">
+                                        <Expander.Header>
+                                            <Grid MinHeight="72">
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="兜底音频格式与预设情感" Style="{StaticResource PowerToysTitleStyle}" />
+                                                    <TextBlock Text="修改基础声音描述、采样率和追加情感属性" Style="{StaticResource PowerToysSubtitleStyle}" />
+                                                </StackPanel>
                                             </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="200"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="兜底声道数" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <NumberBox Grid.Column="1" x:Name="TtsFallbackChannelsNumberBox" Minimum="1" Maximum="2" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
+                                        </Expander.Header>
+                                        <StackPanel Padding="0,4,0,8">
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="300"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="音频格式" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <TextBox Grid.Column="1" x:Name="TtsAudioFormatTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="200"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="兜底采样率" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <NumberBox Grid.Column="1" x:Name="TtsFallbackSampleRateNumberBox" Minimum="8000" Maximum="96000" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="200"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="兜底声道数" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <NumberBox Grid.Column="1" x:Name="TtsFallbackChannelsNumberBox" Minimum="1" Maximum="2" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="300"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="默认情感" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <TextBox Grid.Column="1" x:Name="TtsDefaultEmotionTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="把情感追加到声音描述" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <ToggleSwitch Grid.Column="1" x:Name="TtsAppendEmotionSwitch" Toggled="EditableRoutedChanged" VerticalAlignment="Center" Margin="0" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}" BorderThickness="0">
+                                                <StackPanel Margin="0,8">
+                                                    <TextBlock Text="基础声音描述" Style="{StaticResource PowerToysInnerTitleStyle}" Margin="0,0,0,8" />
+                                                    <TextBox x:Name="TtsBaseVoiceDescriptionTextBox" AcceptsReturn="True" Height="100" TextWrapping="Wrap" TextChanged="EditableTextChanged" />
+                                                </StackPanel>
+                                            </Border>
+                                        </StackPanel>
+                                    </Expander>
+
+                                    <StackPanel>
+                                        <TextBlock Text="Sherpa-onnx 本地模型设置" FontWeight="SemiBold" FontSize="14" Margin="4,16,0,8" />
+
                                         <Border Style="{StaticResource PowerToysItemBorderStyle}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="默认情感" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <TextBox Grid.Column="1" x:Name="TtsDefaultEmotionTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="把情感追加到声音描述" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <ToggleSwitch Grid.Column="1" x:Name="TtsAppendEmotionSwitch" Toggled="EditableRoutedChanged" VerticalAlignment="Center" Margin="0" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <StackPanel Spacing="8">
-                                                <TextBlock Text="基础声音描述" FontWeight="Medium" />
-                                                <TextBox x:Name="TtsBaseVoiceDescriptionTextBox" AcceptsReturn="True" Height="100" TextWrapping="Wrap" TextChanged="EditableTextChanged" />
-                                            </StackPanel>
-                                        </Border>
-                                    </StackPanel>
-
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
-                                        <TextBlock Text="Sherpa-onnx 本地模型设置" FontWeight="SemiBold" FontSize="14" Margin="4,0,0,8" />
-
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="300"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Sherpa 模型目录" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="Sherpa 模型目录" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="TtsSherpaModelRootTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -754,7 +781,9 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Sherpa 模型文件" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="Sherpa 模型文件" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="TtsSherpaModelFileTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -764,7 +793,9 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Tokens 文件" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="Tokens 文件" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="TtsSherpaTokensFileTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -774,7 +805,9 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Lexicon 文件" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="Lexicon 文件" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="TtsSherpaLexiconFileTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -784,7 +817,9 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Dict 目录" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="Dict 目录" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="TtsSherpaDictDirTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -794,7 +829,9 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Rule FST 列表（逗号分隔）" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="Rule FST 列表（逗号分隔）" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="TtsSherpaRuleFstsTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -804,116 +841,131 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Provider" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="Provider" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="TtsSherpaProviderTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="200"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="线程数" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <NumberBox Grid.Column="1" x:Name="TtsSherpaThreadsNumberBox" Minimum="1" Maximum="16" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="200"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Speaker Id" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <NumberBox Grid.Column="1" x:Name="TtsSherpaSpeakerNumberBox" Minimum="0" Maximum="999" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="200"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="语速" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <NumberBox Grid.Column="1" x:Name="TtsSherpaSpeedNumberBox" Minimum="0.2" Maximum="3" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="200"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="最大切句数" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <NumberBox Grid.Column="1" x:Name="TtsSherpaMaxSentencesNumberBox" Minimum="1" Maximum="20" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="200"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Silence Scale" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <NumberBox Grid.Column="1" x:Name="TtsSherpaSilenceScaleNumberBox" Minimum="0" Maximum="2" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="200"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Noise Scale" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <NumberBox Grid.Column="1" x:Name="TtsSherpaNoiseScaleNumberBox" Minimum="0" Maximum="2" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="200"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Noise Scale W" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <NumberBox Grid.Column="1" x:Name="TtsSherpaNoiseScaleWNumberBox" Minimum="0" Maximum="2" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="200"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Length Scale" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <NumberBox Grid.Column="1" x:Name="TtsSherpaLengthScaleNumberBox" Minimum="0.2" Maximum="3" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Sherpa Debug" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <ToggleSwitch Grid.Column="1" x:Name="TtsSherpaDebugSwitch" Toggled="EditableRoutedChanged" VerticalAlignment="Center" Margin="0" />
                                             </Grid>
                                         </Border>
                                     </StackPanel>
 
+                                    <Expander Style="{StaticResource PowerToysExpanderStyle}">
+                                        <Expander.Header>
+                                            <Grid MinHeight="72">
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="Sherpa 引擎高级调优参数" Style="{StaticResource PowerToysTitleStyle}" />
+                                                    <TextBlock Text="调整线程、切句数、语速以及底噪等内核参数" Style="{StaticResource PowerToysSubtitleStyle}" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Expander.Header>
+                                        <StackPanel Padding="0,4,0,8">
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="200"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="线程数" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <NumberBox Grid.Column="1" x:Name="TtsSherpaThreadsNumberBox" Minimum="1" Maximum="16" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="200"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="Speaker Id" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <NumberBox Grid.Column="1" x:Name="TtsSherpaSpeakerNumberBox" Minimum="0" Maximum="999" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="200"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="语速" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <NumberBox Grid.Column="1" x:Name="TtsSherpaSpeedNumberBox" Minimum="0.2" Maximum="3" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="200"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="最大切句数" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <NumberBox Grid.Column="1" x:Name="TtsSherpaMaxSentencesNumberBox" Minimum="1" Maximum="20" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="200"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="Silence Scale" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <NumberBox Grid.Column="1" x:Name="TtsSherpaSilenceScaleNumberBox" Minimum="0" Maximum="2" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="200"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="Noise Scale" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <NumberBox Grid.Column="1" x:Name="TtsSherpaNoiseScaleNumberBox" Minimum="0" Maximum="2" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="200"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="Noise Scale W" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <NumberBox Grid.Column="1" x:Name="TtsSherpaNoiseScaleWNumberBox" Minimum="0" Maximum="2" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="200"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="Length Scale" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <NumberBox Grid.Column="1" x:Name="TtsSherpaLengthScaleNumberBox" Minimum="0.2" Maximum="3" SmallChange="0.1" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}" BorderThickness="0">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="Sherpa Debug" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <ToggleSwitch Grid.Column="1" x:Name="TtsSherpaDebugSwitch" Toggled="EditableRoutedChanged" VerticalAlignment="Center" Margin="0" />
+                                                </Grid>
+                                            </Border>
+                                        </StackPanel>
+                                    </Expander>
                                 </StackPanel>
 
-                                <StackPanel x:Name="MemorySettingsPanel" Spacing="24" Visibility="Collapsed">
-                                    <InfoBar IsOpen="True" Severity="Informational" Title="记忆目录" Message="Memory 文件夹专门保存私有数据。这里先编辑好感度和记忆路径，语义检索以后可以继续扩展。" />
+                                <StackPanel x:Name="MemorySettingsPanel" Visibility="Collapsed">
+                                    <InfoBar IsOpen="True" Severity="Informational" Title="记忆目录" Message="Memory 文件夹专门保存私有数据。这里先编辑好感度和记忆路径，语义检索以后可以继续扩展。" Margin="1,0,1,16" />
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
+                                    <StackPanel>
                                         <Border Style="{StaticResource PowerToysItemBorderStyle}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Memory 文件夹" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="Memory 文件夹" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="MemoryDirectoryTextBox" IsReadOnly="True" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
@@ -923,179 +975,189 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="300"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="长期记忆文件" VerticalAlignment="Center" FontWeight="Medium" />
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="长期记忆文件" Style="{StaticResource PowerToysTitleStyle}" />
+                                                </StackPanel>
                                                 <TextBox Grid.Column="1" x:Name="MemoryFileTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
                                             </Grid>
                                         </Border>
                                     </StackPanel>
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="300"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="好感度文件" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <TextBox Grid.Column="1" x:Name="FavorabilityFileTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
+                                    <Expander Style="{StaticResource PowerToysExpanderStyle}">
+                                        <Expander.Header>
+                                            <Grid MinHeight="72">
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="高级记忆与好感度调整" Style="{StaticResource PowerToysTitleStyle}" />
+                                                    <TextBlock Text="调整情感数值或预览 JSONL 存档内容" Style="{StaticResource PowerToysSubtitleStyle}" />
+                                                </StackPanel>
                                             </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="200"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="好感度数值（0-1）" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <NumberBox Grid.Column="1" x:Name="FavorabilityValueNumberBox" Minimum="0" Maximum="1" SmallChange="0.05" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="300"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="来源" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <TextBox Grid.Column="1" x:Name="FavorabilitySourceTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                    </StackPanel>
-
-                                    <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                        <StackPanel Spacing="8">
-                                            <TextBlock Text="memory.jsonl 预览（只读）" FontWeight="Medium" />
-                                            <TextBox x:Name="MemoryPreviewTextBox" AcceptsReturn="True" Height="220" IsReadOnly="True" TextWrapping="Wrap" />
+                                        </Expander.Header>
+                                        <StackPanel Padding="0,4,0,8">
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="300"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="好感度文件" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <TextBox Grid.Column="1" x:Name="FavorabilityFileTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="200"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="好感度数值（0-1）" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <NumberBox Grid.Column="1" x:Name="FavorabilityValueNumberBox" Minimum="0" Maximum="1" SmallChange="0.05" ValueChanged="EditableNumberChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="300"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="来源" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <TextBox Grid.Column="1" x:Name="FavorabilitySourceTextBox" TextChanged="EditableTextChanged" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}" BorderThickness="0">
+                                                <StackPanel Margin="0,8">
+                                                    <TextBlock Text="memory.jsonl 预览（只读）" Style="{StaticResource PowerToysInnerTitleStyle}" Margin="0,0,0,8" />
+                                                    <TextBox x:Name="MemoryPreviewTextBox" AcceptsReturn="True" Height="220" IsReadOnly="True" TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </Border>
                                         </StackPanel>
-                                    </Border>
+                                    </Expander>
                                 </StackPanel>
 
-                                <StackPanel x:Name="AboutSettingsPanel" Spacing="24" Visibility="Collapsed">
-
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
+                                <StackPanel x:Name="AboutSettingsPanel" Visibility="Collapsed">
+                                    <StackPanel>
                                         <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <StackPanel Spacing="8">
-                                                <TextBlock Text="项目信息" FontWeight="SemiBold" FontSize="14" />
-                                                <TextBlock x:Name="AboutProjectInfoTextBlock" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                                            <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                <TextBlock Text="项目信息" Style="{StaticResource PowerToysTitleStyle}" Margin="0,0,0,4" />
+                                                <TextBlock x:Name="AboutProjectInfoTextBlock" Style="{StaticResource PowerToysSubtitleStyle}" />
                                             </StackPanel>
                                         </Border>
                                         <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <StackPanel Spacing="8">
-                                                <TextBlock Text="当前状态" FontWeight="SemiBold" FontSize="14" />
+                                            <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                <TextBlock Text="当前状态" Style="{StaticResource PowerToysTitleStyle}" Margin="0,0,0,4" />
                                                 <TextBlock x:Name="AboutResourceModeTextBlock" TextWrapping="Wrap" />
-                                                <TextBlock x:Name="AboutVersionTextBlock" Foreground="{ThemeResource TextFillColorSecondaryBrush}" TextWrapping="Wrap" />
+                                                <TextBlock x:Name="AboutVersionTextBlock" Style="{StaticResource PowerToysSubtitleStyle}" Margin="0,4,0,0" />
                                             </StackPanel>
                                         </Border>
                                     </StackPanel>
 
-                                    <StackPanel Style="{StaticResource PowerToysGroupStackStyle}">
-                                        <TextBlock Text="路径诊断" FontWeight="SemiBold" FontSize="14" Margin="4,0,0,8" />
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="300"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="游戏程序" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <TextBox Grid.Column="1" x:Name="AboutGamePathTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
+                                    <Expander Style="{StaticResource PowerToysExpanderStyle}">
+                                        <Expander.Header>
+                                            <Grid MinHeight="72">
+                                                <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                                    <TextBlock Text="开发与路径诊断信息" Style="{StaticResource PowerToysTitleStyle}" />
+                                                    <TextBlock Text="查看底层程序关联与配置文件绝对路径" Style="{StaticResource PowerToysSubtitleStyle}" />
+                                                </StackPanel>
                                             </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="300"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="StreamingAssets" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <TextBox Grid.Column="1" x:Name="AboutStreamingAssetsTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="300"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="AI 配置" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <TextBox Grid.Column="1" x:Name="AboutAiConfigTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="300"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="TTS 配置" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <TextBox Grid.Column="1" x:Name="AboutTtsConfigTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="300"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Wisper 配置" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <TextBox Grid.Column="1" x:Name="AboutWhisperConfigTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="300"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Memory" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <TextBox Grid.Column="1" x:Name="AboutMemoryPathTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="300"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="Unity 日志" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <TextBox Grid.Column="1" x:Name="AboutUnityLogPathTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                        <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="300"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="启动器配置" VerticalAlignment="Center" FontWeight="Medium" />
-                                                <TextBox Grid.Column="1" x:Name="AboutLauncherSettingsPathTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
-                                            </Grid>
-                                        </Border>
-                                    </StackPanel>
+                                        </Expander.Header>
+                                        <StackPanel Padding="0,4,0,8">
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="300"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="游戏程序" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <TextBox Grid.Column="1" x:Name="AboutGamePathTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="300"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="StreamingAssets" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <TextBox Grid.Column="1" x:Name="AboutStreamingAssetsTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="300"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="AI 配置" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <TextBox Grid.Column="1" x:Name="AboutAiConfigTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="300"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="TTS 配置" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <TextBox Grid.Column="1" x:Name="AboutTtsConfigTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="300"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="Wisper 配置" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <TextBox Grid.Column="1" x:Name="AboutWhisperConfigTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="300"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="Memory" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <TextBox Grid.Column="1" x:Name="AboutMemoryPathTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="300"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="Unity 日志" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <TextBox Grid.Column="1" x:Name="AboutUnityLogPathTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                            <Border Style="{StaticResource PowerToysInnerItemBorderStyle}" BorderThickness="0">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="300"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="启动器配置" Style="{StaticResource PowerToysInnerTitleStyle}" />
+                                                    <TextBox Grid.Column="1" x:Name="AboutLauncherSettingsPathTextBox" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Center" />
+                                                </Grid>
+                                            </Border>
+                                        </StackPanel>
+                                    </Expander>
 
-                                    <InfoBar
-                                        IsOpen="True"
-                                        IsClosable="False"
-                                        Severity="Informational"
-                                        Title="提示"
-                                        Message="如果启动后语音、TTS、记忆或 AI 配置没有生效，请先检查这里的 StreamingAssets 是否指向当前正在运行的游戏目录。" />
+                                    <InfoBar IsOpen="True" IsClosable="False" Severity="Informational" Title="提示" Message="如果启动后语音、TTS、记忆或 AI 配置没有生效，请先检查这里的 StreamingAssets 是否指向当前正在运行的游戏目录。" Margin="1,16,1,0" />
                                 </StackPanel>
 
-                                <StackPanel x:Name="ExtraModuleSettingsPanel" Spacing="24" Visibility="Collapsed">
+                                <StackPanel x:Name="ExtraModuleSettingsPanel" Visibility="Collapsed">
                                     <Border Style="{StaticResource PowerToysItemBorderStyle}">
-                                        <StackPanel Spacing="8">
-                                            <TextBlock FontSize="16" FontWeight="SemiBold" Text="额外模块暂时先不开发。" />
-                                            <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="之后这里可以接插件、工具队列和模块管理。" />
+                                        <StackPanel Style="{StaticResource PowerToysTitleStackStyle}">
+                                            <TextBlock Text="额外模块暂时先不开发。" Style="{StaticResource PowerToysTitleStyle}" />
+                                            <TextBlock Text="之后这里可以接插件、工具队列和模块管理。" Style="{StaticResource PowerToysSubtitleStyle}" />
                                         </StackPanel>
                                     </Border>
                                 </StackPanel>
                             </Grid>
                         </ScrollViewer>
 
-                        <Border
-                            x:Name="EditableActionBar"
-                            Grid.Row="3"
-                            Padding="0,14,0,0"
-                            Visibility="Collapsed">
+                        <Border x:Name="EditableActionBar" Grid.Row="3" Padding="0,14,0,0" Visibility="Collapsed">
                             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Spacing="8">
                                 <Button x:Name="DiscardChangesButton" Click="DiscardChangesButton_Click" Content="放弃保存" />
                                 <Button x:Name="SaveChangesButton" Click="SaveChangesButton_Click" Content="保存更改" Style="{StaticResource AccentButtonStyle}" />
