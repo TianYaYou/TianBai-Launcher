@@ -1,0 +1,5 @@
+天白 AI 启动器
+
+用于启动 TianBai Unity 桌宠，并可视化管理对话、Wisper、TTS、记忆和运行日志配置。
+
+如果启动后语音、TTS、记忆或 AI 配置没有生效，请优先检查本页显示的 StreamingAssets 路径是否指向当前正在运行的游戏目录。

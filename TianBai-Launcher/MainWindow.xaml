@@ -351,10 +351,42 @@
                                     <TextBox x:Name="MemoryPreviewTextBox" Header="memory.jsonl 预览（只读）" AcceptsReturn="True" Height="220" IsReadOnly="True" TextWrapping="Wrap" />
                                 </StackPanel>
 
-                                <StackPanel x:Name="AboutSettingsPanel" Spacing="12" Visibility="Collapsed">
-                                    <TextBlock FontSize="16" FontWeight="SemiBold" Text="TianBai Launcher" />
-                                    <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="用于启动天白 Unity 桌宠，并可视化编辑对话、Wisper、TTS 和记忆配置。" TextWrapping="Wrap" />
-                                    <TextBlock x:Name="ConfigRootTextBlock" TextWrapping="Wrap" />
+                                <StackPanel x:Name="AboutSettingsPanel" Spacing="16" Visibility="Collapsed">
+                                    <StackPanel Spacing="6">
+                                        <TextBlock FontSize="16" FontWeight="SemiBold" Text="项目信息" />
+                                        <TextBlock
+                                            x:Name="AboutProjectInfoTextBlock"
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+
+                                    <StackPanel Spacing="6">
+                                        <TextBlock FontSize="16" FontWeight="SemiBold" Text="当前状态" />
+                                        <TextBlock x:Name="AboutResourceModeTextBlock" TextWrapping="Wrap" />
+                                        <TextBlock
+                                            x:Name="AboutVersionTextBlock"
+                                            Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+
+                                    <StackPanel Spacing="8">
+                                        <TextBlock FontSize="16" FontWeight="SemiBold" Text="路径诊断" />
+                                        <TextBox x:Name="AboutGamePathTextBox" Header="游戏程序" IsReadOnly="True" TextWrapping="NoWrap" />
+                                        <TextBox x:Name="AboutStreamingAssetsTextBox" Header="StreamingAssets" IsReadOnly="True" TextWrapping="NoWrap" />
+                                        <TextBox x:Name="AboutAiConfigTextBox" Header="AI 配置" IsReadOnly="True" TextWrapping="NoWrap" />
+                                        <TextBox x:Name="AboutTtsConfigTextBox" Header="TTS 配置" IsReadOnly="True" TextWrapping="NoWrap" />
+                                        <TextBox x:Name="AboutWhisperConfigTextBox" Header="Wisper 配置" IsReadOnly="True" TextWrapping="NoWrap" />
+                                        <TextBox x:Name="AboutMemoryPathTextBox" Header="Memory" IsReadOnly="True" TextWrapping="NoWrap" />
+                                        <TextBox x:Name="AboutUnityLogPathTextBox" Header="Unity 日志" IsReadOnly="True" TextWrapping="NoWrap" />
+                                        <TextBox x:Name="AboutLauncherSettingsPathTextBox" Header="启动器配置" IsReadOnly="True" TextWrapping="NoWrap" />
+                                    </StackPanel>
+
+                                    <InfoBar
+                                        IsOpen="True"
+                                        IsClosable="False"
+                                        Severity="Informational"
+                                        Title="提示"
+                                        Message="如果启动后语音、TTS、记忆或 AI 配置没有生效，请先检查这里的 StreamingAssets 是否指向当前正在运行的游戏目录。" />
                                 </StackPanel>
 
                                 <StackPanel x:Name="ExtraModuleSettingsPanel" Spacing="12" Visibility="Collapsed">

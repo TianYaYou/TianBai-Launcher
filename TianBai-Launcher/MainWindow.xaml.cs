@@ -102,6 +102,7 @@ public sealed partial class MainWindow : Window
     private void GamePathTextBox_TextChanged(object sender, TextChangedEventArgs e)
     {
         UpdateLaunchPathPreview(GamePathTextBox.Text);
+        LoadAboutSettings();
         SaveLauncherSettingsFromUi(autoSave: true);
     }
 
@@ -349,6 +350,7 @@ public sealed partial class MainWindow : Window
         GamePathTextBox.Text = path;
         UpdateLaunchPathPreview(path);
         SaveLauncherSettingsFromUi(autoSave: true);
+        LoadAboutSettings();
         ShowStatus(InfoBarSeverity.Informational, "已检测到天白程序", path);
     }
 
@@ -591,7 +593,7 @@ public sealed partial class MainWindow : Window
             LoadWhisperSettings();
             LoadTtsSettings();
             LoadMemorySettings();
-            ConfigRootTextBlock.Text = $"StreamingAssets：{_configPaths.StreamingAssetsPath}";
+            LoadAboutSettings();
         }
         finally
         {
@@ -603,6 +605,55 @@ public sealed partial class MainWindow : Window
         SetPageDirty(SettingsPage.Tts, false);
         SetPageDirty(SettingsPage.Memory, false);
         CaptureEditablePageSnapshots();
+    }
+
+    private void LoadAboutSettings()
+    {
+        AboutProjectInfoTextBlock.Text = LoadAboutProjectInfoText();
+        AboutResourceModeTextBlock.Text = $"当前资源模式：{GetResourceModeDisplayName()}";
+        AboutVersionTextBlock.Text = BuildAboutVersionText();
+        AboutGamePathTextBox.Text = string.IsNullOrWhiteSpace(GamePathTextBox.Text) ? "未设置启动路径" : GamePathTextBox.Text.Trim();
+        AboutStreamingAssetsTextBox.Text = _configPaths.StreamingAssetsPath;
+        AboutAiConfigTextBox.Text = _configPaths.AiConfigPath;
+        AboutTtsConfigTextBox.Text = _configPaths.TtsConfigPath;
+        AboutWhisperConfigTextBox.Text = _configPaths.WhisperConfigPath;
+        AboutMemoryPathTextBox.Text = _configPaths.MemoryDirectory;
+        AboutUnityLogPathTextBox.Text = _launcherSettings.UnityLogFilePath;
+        AboutLauncherSettingsPathTextBox.Text = LauncherSettingsService.SettingsPath;
+    }
+
+    private static string LoadAboutProjectInfoText()
+    {
+        string textPath = Path.Combine(AppContext.BaseDirectory, "Asscess", "Text", "about_project_info.txt");
+        if (File.Exists(textPath))
+        {
+            return File.ReadAllText(textPath).Trim();
+        }
+
+        return "天白 AI 启动器用于启动 TianBai Unity 桌宠，并集中管理对话、Wisper、TTS、记忆和运行日志配置。";
+    }
+
+    private string GetResourceModeDisplayName()
+    {
+        string normalizedPath = _configPaths.StreamingAssetsPath.Replace('/', Path.DirectorySeparatorChar);
+        if (normalizedPath.Contains("_Data" + Path.DirectorySeparatorChar + "StreamingAssets", StringComparison.OrdinalIgnoreCase))
+        {
+            return "打包运行目录";
+        }
+
+        if (normalizedPath.Contains(Path.Combine("TianBaiAic", "Assets", "StreamingAssets"), StringComparison.OrdinalIgnoreCase))
+        {
+            return "开发项目目录";
+        }
+
+        return Directory.Exists(_configPaths.StreamingAssetsPath) ? "自定义资源目录" : "未找到有效资源目录";
+    }
+
+    private static string BuildAboutVersionText()
+    {
+        Version? version = typeof(MainWindow).Assembly.GetName().Version;
+        string versionText = version == null ? "0.1.0-alpha" : $"{version.Major}.{version.Minor}.{version.Build}";
+        return $"启动器版本：{versionText}{Environment.NewLine}Unity 项目：TianBaiAI-front-Alpha{Environment.NewLine}构建类型：Alpha / Local Build";
     }
 
     private void LoadLauncherSettingsToUi()

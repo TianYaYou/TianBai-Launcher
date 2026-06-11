@@ -23,6 +23,7 @@
     <Content Include="Asscess\Photos\104597715_p0.jpg" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Asscess\Photos\icon.png" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Asscess\Photos\icon.ico" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="Asscess\Text\about_project_info.txt" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
