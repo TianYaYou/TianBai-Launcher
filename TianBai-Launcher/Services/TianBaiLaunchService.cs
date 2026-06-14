@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Microsoft.Win32;
 
 namespace TianBai_Launcher;
 
@@ -15,6 +16,9 @@ public static class TianBaiLaunchService
     private const string UnityExeName = "Tian Bai Aic.exe";
     private const string UnityExeNameNoSpace = "TianBaiAic.exe";
     private const string EnvGamePath = "TIANBAI_GAME_EXE_PATH";
+    private const string UnityRegistryCompany = "DefaultCompany";
+    private const int StartupWindowWidth = 800;
+    private const int StartupWindowHeight = 450;
 
     /// <summary>
     /// 自动寻找 Unity 构建产物。
@@ -86,6 +90,7 @@ public static class TianBaiLaunchService
         try
         {
             EnsureRuntimeStreamingAssets(fullPath, options.SourceStreamingAssetsPath);
+            ConfigureUnityStartupWindow(fullPath);
             string arguments = BuildArguments(options);
             var startInfo = new ProcessStartInfo
             {
@@ -106,6 +111,41 @@ public static class TianBaiLaunchService
         catch (Exception e)
         {
             return TianBaiLaunchResult.Fail($"启动进程失败：{e.Message}");
+        }
+    }
+
+    private static void ConfigureUnityStartupWindow(string executablePath)
+    {
+        string productName = Path.GetFileNameWithoutExtension(executablePath);
+        if (string.IsNullOrWhiteSpace(productName))
+        {
+            return;
+        }
+
+        try
+        {
+            using RegistryKey key = Registry.CurrentUser.CreateSubKey($@"Software\{UnityRegistryCompany}\{productName}");
+            if (key == null)
+            {
+                return;
+            }
+
+            // Unity Standalone 会读取上一次运行留下的 Screenmanager 注册表值。
+            // 启动器在进程创建前写入窗口化设置，可以避免游戏先全屏闪一下，再被启动页脚本强制改回窗口。
+            key.SetValue("Screenmanager Fullscreen mode_h3630240806", 3, RegistryValueKind.DWord);
+            key.SetValue("Screenmanager Resolution Width_h182942802", StartupWindowWidth, RegistryValueKind.DWord);
+            key.SetValue("Screenmanager Resolution Height_h2627697771", StartupWindowHeight, RegistryValueKind.DWord);
+            key.SetValue("Screenmanager Resolution Use Native_h1405027254", 0, RegistryValueKind.DWord);
+            key.SetValue("Screenmanager Resolution Window Width_h2524650974", StartupWindowWidth, RegistryValueKind.DWord);
+            key.SetValue("Screenmanager Resolution Window Height_h1684712807", StartupWindowHeight, RegistryValueKind.DWord);
+            key.SetValue("Screenmanager Resolution Width Default_h680557497", StartupWindowWidth, RegistryValueKind.DWord);
+            key.SetValue("Screenmanager Resolution Height Default_h1380706816", StartupWindowHeight, RegistryValueKind.DWord);
+            key.SetValue("Screenmanager Resolution Use Native Default_h1405981789", 0, RegistryValueKind.DWord);
+            key.SetValue("Screenmanager Fullscreen mode Default_h401710285", 3, RegistryValueKind.DWord);
+        }
+        catch
+        {
+            // 注册表写入失败不应该阻止游戏启动；最坏情况只是回到 Unity 自己保存的窗口状态。
         }
     }
 
